@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import { filterImageFromURL, deleteLocalFiles } from "./util/util";
 
@@ -13,8 +13,8 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
   app.use(bodyParser.json());
 
   // Route to filter an image from a public URL
-  app.get("/filteredimage", async (req, res) => {
-    const { image_url } = req.query;
+  app.get("/filteredimage", async (req: Request, res: Response) => {
+    const { image_url } = req.query as { image_url: string };
 
     // Validate the image_url query
     if (!image_url) {
@@ -23,7 +23,7 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
 
     try {
       // Call filterImageFromURL(image_url) to filter the image
-      const filteredpath = await filterImageFromURL(image_url as string);
+      const filteredpath = await filterImageFromURL(image_url);
 
       // Send the resulting file in the response
       res.sendFile(filteredpath, () => {
